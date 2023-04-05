@@ -1,11 +1,12 @@
 package shared;
 
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class DomainEventMetaData {
-    private int ID;
-    private Timestamp timestamp;
+public class DomainEventMetaData implements Serializable {
+    private final int ID;
+    private final Timestamp timestamp;
 
     public DomainEventMetaData(int ID) {
         this.ID = ID;

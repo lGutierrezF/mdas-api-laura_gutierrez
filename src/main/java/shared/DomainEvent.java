@@ -1,9 +1,11 @@
 package shared;
 
 
-public abstract class DomainEvent {
-    private int ID;
-    private DomainEventMetaData domainEventMetaData;
+import java.io.Serializable;
+
+public abstract class DomainEvent implements Serializable {
+    private final int ID;
+    private final DomainEventMetaData domainEventMetaData;
 
     public DomainEvent(int ID) {
         this.ID = ID;
