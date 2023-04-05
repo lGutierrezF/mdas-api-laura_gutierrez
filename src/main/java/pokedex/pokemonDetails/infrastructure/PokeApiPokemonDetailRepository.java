@@ -23,7 +23,7 @@ public class PokeApiPokemonDetailRepository implements PokemonDetailRepository {
     }
 
     public PokemonDetail getById(PokemonID pokemonID) throws PokemonDetailRepositoryConnectionException, PokemonNotFoundException, PokemonIdOutOfRangeException, PokemonNameNotEmptyException, PokemonNegativeWeightException, PokemonNegativeHeightException {
-
+        var recievedEvents = new InMemoryFavouritePokemonEventRepository();
         HttpResponse<String> response;
         try {
             response = apiCall(pokemonID);
@@ -45,7 +45,8 @@ public class PokeApiPokemonDetailRepository implements PokemonDetailRepository {
         PokemonName name = new PokemonName(obj.getString("name"));
         PokemonWeight weight = new PokemonWeight(obj.getDouble("weight"));
         PokemonHeight height = new PokemonHeight(obj.getDouble("height"));
-        return new PokemonDetail(ID, name, height, weight);
+        PokemonFavourite favourite = new PokemonFavourite(recievedEvents.count(ID));
+        return new PokemonDetail(ID, name, height, weight, favourite);
     }
 
     private HttpResponse<String> apiCall(PokemonID pokemonID) throws IOException, InterruptedException {

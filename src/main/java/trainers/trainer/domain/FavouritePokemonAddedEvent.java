@@ -7,6 +7,7 @@ public class FavouritePokemonAddedEvent extends DomainEvent {
 
     public FavouritePokemonAddedEvent(int pokemonID) {
         super(pokemonID);
+        this.pokemonID = pokemonID;
     }
     public int getPokemonID() {
         return pokemonID;

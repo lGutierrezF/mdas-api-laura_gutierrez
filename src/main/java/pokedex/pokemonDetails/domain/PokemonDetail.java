@@ -5,15 +5,19 @@ public class PokemonDetail {
     private final PokemonName name;
     private final PokemonHeight height;
     private final PokemonWeight weight;
+    private PokemonFavourite favourited;
 
     public PokemonDetail(PokemonID ID,
                          PokemonName name,
                          PokemonHeight height,
-                         PokemonWeight weight) {
+                         PokemonWeight weight,
+                         PokemonFavourite favourited) {
         this.ID = ID;
         this.name = name;
         this.height = height;
         this.weight = weight;
+        this.favourited = favourited;
+
     }
 
     public PokemonID ID() {
@@ -31,4 +35,8 @@ public class PokemonDetail {
     public PokemonWeight weight() {
         return weight;
     }
+    public PokemonFavourite favouritedTimes() {
+        return favourited;
+    }
+
 }

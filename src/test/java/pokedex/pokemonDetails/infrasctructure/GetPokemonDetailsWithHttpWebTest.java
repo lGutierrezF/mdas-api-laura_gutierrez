@@ -32,7 +32,8 @@ class GetPokemonDetailsWithHttpWebTest {
                 .jsonPath("$.id").isEqualTo("1")
                 .jsonPath("$.name").isEqualTo("bulbasaur")
                 .jsonPath("$.height").isEqualTo("7.00000")
-                .jsonPath("$.weight").isEqualTo("69.0000");
+                .jsonPath("$.weight").isEqualTo("69.0000")
+                .jsonPath("$.favouritedTimes").isEqualTo("0");
     }
 
 }

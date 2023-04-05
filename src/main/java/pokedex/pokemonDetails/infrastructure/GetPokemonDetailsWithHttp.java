@@ -33,13 +33,15 @@ public class GetPokemonDetailsWithHttp {
                             "id":"%d",
                             "name":"%s",
                             "height":"%G",
-                            "weight":"%G"
+                            "weight":"%G",
+                            "favouritedTimes":"%s"
                         }
                         """, 
                 pokemonTypeCollection.ID().ID(),
                 pokemonTypeCollection.name().toString(),
                 pokemonTypeCollection.height().height(),
-                pokemonTypeCollection.weight().weight()
+                pokemonTypeCollection.weight().weight(),
+                pokemonTypeCollection.favouritedTimes().getFavouriteCount()
         );
     }
 }
