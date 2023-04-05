@@ -22,6 +22,5 @@ public class RabbitMqEventPublisher implements EventPublisher{
                 sendEvent(event));
     }
     private void sendEvent(DomainEvent event) {
-        this.rabbitTemplate.convertAndSend("favourite_pokemon_added", event.type());
-    }
+        this.rabbitTemplate.convertAndSend(event.type(), event);    }
 }
