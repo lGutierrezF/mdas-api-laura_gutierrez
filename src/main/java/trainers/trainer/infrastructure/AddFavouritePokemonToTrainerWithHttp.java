@@ -8,13 +8,14 @@ import trainers.trainer.application.AddFavouritePokemon;
 import trainers.trainer.domain.exceptions.PokemonAlreadyExistInFavouritePokemonsException;
 import trainers.trainer.domain.exceptions.PokemonIdOutOfRangeException;
 import trainers.trainer.domain.exceptions.TrainerDontExistException;
+import shared.RabbitMqEventPublisher;
 
 @RestController
 public class AddFavouritePokemonToTrainerWithHttp {
     @GetMapping("AddFavouritePokemonToTrainer/{pokemonID}")
     public ResponseEntity<String> AddFavouritePokemonToTrainer(@RequestHeader("user_id") String trainerID, @PathVariable int pokemonID) {
         var trainerRepository = new InMemoryTrainerRepository();
-        var addFavouritePokemon = new AddFavouritePokemon(trainerRepository);
+        var addFavouritePokemon = new AddFavouritePokemon(trainerRepository, new RabbitMqEventPublisher());
         blankIdGuard(trainerID);
 
         try {
