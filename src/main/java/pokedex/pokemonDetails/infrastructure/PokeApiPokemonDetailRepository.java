@@ -23,7 +23,7 @@ public class PokeApiPokemonDetailRepository implements PokemonDetailRepository {
     }
 
     public PokemonDetail getById(PokemonID pokemonID) throws PokemonDetailRepositoryConnectionException, PokemonNotFoundException, PokemonIdOutOfRangeException, PokemonNameNotEmptyException, PokemonNegativeWeightException, PokemonNegativeHeightException {
-        var recievedEvents = new InMemoryFavouritePokemonEventRepository();
+        var recievedEvents = new InMemoryFavouritePokemonAddFavouritePokemonEventRepository();
         HttpResponse<String> response;
         try {
             response = apiCall(pokemonID);

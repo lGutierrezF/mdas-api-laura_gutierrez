@@ -8,7 +8,7 @@ import trainers.trainer.domain.FavouritePokemonAddedEvent;
 public class NotifyPokemonOnFavouritePokemonAddedSubscriber {
     @RabbitListener(queues = "favouritePokemon.added")
     public void on(FavouritePokemonAddedEvent event) {
-        var recievedEvents = new InMemoryFavouritePokemonEventRepository();
+        var recievedEvents = new InMemoryFavouritePokemonAddFavouritePokemonEventRepository();
         recievedEvents.add(event);
 
     }

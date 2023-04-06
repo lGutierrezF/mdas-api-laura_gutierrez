@@ -1,0 +1,38 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_VHOST: mdas-api
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management listener [{port,15672},{ip,\"172.22.0.3\"}]"
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    networks:
+      - my-network
+
+  spring-boot-app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      SPRING_RABBITMQ_VIRTUAL_HOST: mdas-api
+      SPRING_RABBITMQ_LISTENER_SIMPLE_CONCURRENCY: 1
+      SPRING_RABBITMQ_LISTENER_DIRECT_CONCURRENCY: 1
+      SPRING_RABBITMQ_LISTENER_ACK_MODE: manual
+      SPRING_RABBITMQ_TEMPLATE_EXCHANGE: domain-events
+      SPRING_RABBITMQ_TEMPLATE_ROUTING_KEY: favouritePokemon.added
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
