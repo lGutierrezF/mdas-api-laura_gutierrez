@@ -16,4 +16,5 @@ public class FavouritePokemonAddedEvent extends DomainEvent {
     public String type() {
         return "favouritePokemon.added";
     }
+
 }

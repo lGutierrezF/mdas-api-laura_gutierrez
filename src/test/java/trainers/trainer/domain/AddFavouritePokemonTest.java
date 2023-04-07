@@ -7,8 +7,7 @@ import org.mockito.Mock;
 import trainers.trainer.domain.exceptions.PokemonIdOutOfRangeException;
 import trainers.trainer.domain.exceptions.TrainerDontExistException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AddFavouritePokemonTest {
@@ -29,7 +28,5 @@ public class AddFavouritePokemonTest {
         } catch (PokemonIdOutOfRangeException e) {
             fail();
         }
-
-
     }
 }

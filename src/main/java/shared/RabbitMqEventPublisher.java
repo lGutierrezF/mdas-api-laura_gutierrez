@@ -8,8 +8,8 @@ public class RabbitMqEventPublisher implements EventPublisher{
     private final RabbitTemplate rabbitTemplate;
 
     public RabbitMqEventPublisher() {
-
-        this.rabbitTemplate = new RabbitMQConfig().rabbitTemplate();
+        RabbitMQConfig config = new RabbitMQConfig();
+        this.rabbitTemplate = config.rabbitTemplate();
     }
 
     @Override
