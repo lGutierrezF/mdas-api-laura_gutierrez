@@ -10,7 +10,7 @@ import springboot.MdasSpringbootAplication;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SpringBootTest(classes = MdasSpringbootAplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class GetPokemonTypeWithHttpWebTest {
+class GetPokemonTypeWithHttpWebTestIT {
 
     @Autowired
     private WebTestClient webTestClient;

@@ -12,8 +12,8 @@ import trainers.trainer.domain.exceptions.TrainerAlreadyCreatedException;
 public class CreateTrainerWithHttp {
     @PostMapping("create-trainer/{ID}")
     public static void CreateTrainer(@PathVariable String ID) {
-        var trainerRepoository = new InMemoryTrainerRepository();
-        var createTrainer = new CreateTrainer(trainerRepoository);
+        var trainerRepository = new InMemoryTrainerRepository();
+        var createTrainer = new CreateTrainer(trainerRepository);
 
         blankIdGuard(ID);
         try {

@@ -13,6 +13,9 @@ import pokedex.pokemonDetails.domain.exceptions.*;
 public class GetPokemonDetailsWithHttp {
     @GetMapping("get-pokemon-details-by-id/{pokemonID}")
     public static String getPokemonDetailsByID(@PathVariable int pokemonID) {
+        if (pokemonID < 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"InvalidPokemonData");
+        }
         var getPokemonDetails = new GetPokemonDetails(new PokeApiPokemonDetailRepository());
         try {
             PokemonDetail pokemonTypeCollection = getPokemonDetails.execute(pokemonID);
@@ -20,13 +23,13 @@ public class GetPokemonDetailsWithHttp {
         } catch (PokemonNameNotEmptyException |
                  PokemonNegativeHeightException | PokemonIdOutOfRangeException | PokemonNegativeWeightException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"InvalidPokemonData");
-
         } catch (PokemonNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"PokemonNotFoundException");
         } catch (PokemonDetailRepositoryConnectionException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"ConnectionError");
         }
     }
+
     private static String transformToJSON(PokemonDetail pokemonTypeCollection) {
         return String.format("""
                         {

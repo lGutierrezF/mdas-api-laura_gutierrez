@@ -9,7 +9,7 @@ import trainers.trainer.domain.exceptions.MessageBrokerConnectionException;
 import trainers.trainer.domain.exceptions.PokemonAlreadyExistInFavouritePokemonsException;
 import trainers.trainer.domain.exceptions.PokemonIdOutOfRangeException;
 import trainers.trainer.domain.exceptions.TrainerDontExistException;
-import shared.RabbitMqEventPublisher;
+import shared.application.RabbitMqEventPublisher;
 
 
 @RestController

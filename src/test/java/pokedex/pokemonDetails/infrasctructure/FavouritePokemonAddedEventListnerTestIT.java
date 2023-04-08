@@ -5,14 +5,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pokedex.pokemonDetails.infrastructure.NotifyPokemonOnFavouritePokemonAddedSubscriber;
-import shared.RabbitMqEventPublisher;
+import shared.application.RabbitMqEventPublisher;
 import trainers.trainer.domain.FavouritePokemonAddedEvent;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class FavouritePokemonAddedEventListnerTest {
+public class FavouritePokemonAddedEventListnerTestIT {
     @Mock
     private RabbitMqEventPublisher rabbitTemplate;
     @Mock

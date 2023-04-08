@@ -1,6 +1,6 @@
 package trainers.trainer.domain;
 
-import shared.DomainEvent;
+import shared.domain.DomainEvent;
 
 public class FavouritePokemonAddedEvent extends DomainEvent {
     private int pokemonID;

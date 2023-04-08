@@ -1,5 +1,6 @@
 ## Prerequisites
-- Java SDK 17
+- Docker
+- Docker-Compose
 
 ## Stack used 
 - Java 17
@@ -12,9 +13,9 @@ without the need of installing maven.
 You have the linux executable(mvnw) and the windows executable(mvnw.cmd). Just check you have execute permission set on these files to be able to run it.
 In the following sections you will see example commands made with the linux maven wrapper.
 
-## Testing
+## Unit testing
 ```
-./mvnw clean verify
+./mvnw clean test
 ```
 
 ## How to run
@@ -25,57 +26,58 @@ Follow this steps:
   - Open a terminal and change the directory to the root of this project.
   - Execute the following command: 
 ```
-./mvn clean compile -Dexec.mainClass=pokedex.pokemonType.infrastructure.GetPokemonTypeWithConsole exec:java -Dexec.args="pikachu"
+./mvnw clean compile -Dexec.mainClass=pokedex.pokemonType.infrastructure.GetPokemonTypeWithConsole exec:java -Dexec.args="pikachu"
 ```
 
 The pokemon type should appear on console.
 
-### Running a http server
-Spring Boot provides an internal tomcat server that we can use to easily run a http server.
+### Running an http server, integration and acceptance testing.
+This application uses RabbitMQ as a message broker in order to keep the independent bounded contexts communicated.
+So in order for the acceptance tests to pass, it's necessary to have the RabbitMQ service up and running.
 
 Follow this steps:
 - Open a terminal and change the directory to the root of the project.
 - Execute the following command:
 ``` 
-./mvn clean package spring-boot:run
+docker-compose up -d rabbitmql
 ```
-
-- Open a web browser and type the following URL: http://localhost:8080/getPokemonTypesByName/(the name of the pokemon that you want to search).
-For example: http://localhost:8080/getPokemonTypesByName/pikachu
-  
-The pokemon type should appear in the browser.
+- After this we can test and build our application in an independent docker container executing the following command:
+``` 
+docker-compose up -d spring-boot-app
+```
 
 ## Database
 This application is just a proof of software design concepts, so isn't needed a real database. We have use a simple java Map to simulate InMemoryDatabase
 
 ## Endpoints
-The tomcat server by default will start at 8080 port, so you could check all the request with http://localhost:8080 address
-You can use any http client, but just for the convenience of testing header injection, we will use wget in the next examples.
+As stated in our docker compose, we've exposed the localhost:8080 port for the springboot application and localhost:15672 port for managing the RabbitMQ message broker.
+The credentials for accesing the RabbitMQ manager are in the src/main/resources/application.properties directory.
+Any http client could be used, but just for the convenience of testing header injection, we will use wget in the next examples.
 
-### /getPokemonTypesByName/{pokemonName}
+### /get-pokemon-types-by-name/{pokemonName}
 ```
-wget -q -O- localhost:8080/getPokemonTypesByName/pikachu
+wget -q -O- localhost:8080/get-pokemon-types-by-name/pikachu
 ["electric"]
 ```
-### /CreateTrainer/{ID}
+### /create-trainer/{ID}
 Create a trainer in the given ID
 ```
-wget -O- localhost:8080/CreateTrainer/99
+wget -O- localhost:8080/create-trainer/99
 ```
 
-### /AddFavouritePokemonToTrainer/{pokemonID}
+### /add-favourite-pokemon-to-trainer/{pokemonID}
 Note: you need to inject an existing user_id custom header, to be able to add a FavoritePokemon from a Trainer
 ```
-wget -q -S -O - --header='user_id:99' localhost:8080/AddFavouritePokemonToTrainer/1
+wget -q -S -O - --header='user_id:99' localhost:8080/add-favourite-pokemon-to-trainer/1
 ```
 
-### /RemoveFavouritePokemonToTrainer/{pokemonID}
+### /remove-favourite-pokemon-to-trainer/{pokemonID}
 Note: you need to inject an existing user_id custom header, to be able to remove a FavoritePokemon from a Trainer
 ```
-wget -q -S -O - --header='user_id:99' localhost:8080/RemoveFavouritePokemonToTrainer/1
+wget -q -S -O - --header='user_id:99' localhost:8080/remove-favourite-pokemon-to-trainers/1
 ```
 
-### /getPokemonDetailsByID/{pokemonID}
+### /get-pokemon-details-by-id/{pokemonID}
 ```
-wget -O- localhost:8080/getPokemonDetailsByID/1
+wget -O- localhost:8080/get-pokemon-details-by-id/1
 ```

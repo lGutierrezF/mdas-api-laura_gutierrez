@@ -1,10 +1,12 @@
-package shared;
+package shared.application;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import shared.domain.DomainEvent;
+import shared.domain.EventPublisher;
 
 import java.util.Set;
 
-public class RabbitMqEventPublisher implements EventPublisher{
+public class RabbitMqEventPublisher implements EventPublisher {
     private final RabbitTemplate rabbitTemplate;
 
     public RabbitMqEventPublisher() {

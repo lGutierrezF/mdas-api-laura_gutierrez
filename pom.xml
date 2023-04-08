@@ -133,13 +133,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>process-test-classes</id>
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>verify</id>
                         <phase>verify</phase>
                         <goals>
@@ -150,5 +143,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

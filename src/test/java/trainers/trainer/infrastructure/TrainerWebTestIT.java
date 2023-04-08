@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SpringBootTest(classes = MdasSpringbootAplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TrainerWebTest {
+class TrainerWebTestIT {
 
     @Autowired
     private WebTestClient webTestClient;

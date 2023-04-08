@@ -7,7 +7,7 @@ import trainers.trainer.domain.exceptions.MessageBrokerConnectionException;
 import trainers.trainer.domain.exceptions.PokemonAlreadyExistInFavouritePokemonsException;
 import trainers.trainer.domain.exceptions.PokemonIdOutOfRangeException;
 import trainers.trainer.domain.exceptions.TrainerDontExistException;
-import shared.EventPublisher;
+import shared.domain.EventPublisher;
 
 public class AddFavouritePokemon {
     private final TrainerRepository trainerRepository;
