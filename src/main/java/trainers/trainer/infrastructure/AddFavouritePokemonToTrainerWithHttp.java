@@ -5,10 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import trainers.trainer.application.AddFavouritePokemon;
+import trainers.trainer.domain.exceptions.MessageBrokerConnectionException;
 import trainers.trainer.domain.exceptions.PokemonAlreadyExistInFavouritePokemonsException;
 import trainers.trainer.domain.exceptions.PokemonIdOutOfRangeException;
 import trainers.trainer.domain.exceptions.TrainerDontExistException;
 import shared.RabbitMqEventPublisher;
+
 
 @RestController
 public class AddFavouritePokemonToTrainerWithHttp {
@@ -26,8 +28,9 @@ public class AddFavouritePokemonToTrainerWithHttp {
             return ResponseEntity.badRequest().body("PokemonAlreadyExistInFavouritePokemons");
         } catch (PokemonIdOutOfRangeException e) {
             return ResponseEntity.badRequest().body("PokemonIdOutOfRangeException");
+        } catch (MessageBrokerConnectionException e) {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"ConnectionError");
         }
-
         return ResponseEntity.ok().body("ok");
     }
 
