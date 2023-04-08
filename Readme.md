@@ -1,6 +1,7 @@
 ## Prerequisites
 - Docker
 - Docker-Compose
+- CURL 
 
 ## Stack used 
 - Java 17
@@ -43,7 +44,7 @@ docker-compose up -d rabbitmql
 ```
 - After this we can test and build our application in an independent docker container executing the following command:
 ``` 
-docker-compose up -d spring-boot-app
+docker-compose up -d spring-boot-app  
 ```
 
 ## Database
@@ -52,32 +53,31 @@ This application is just a proof of software design concepts, so isn't needed a 
 ## Endpoints
 As stated in our docker compose, we've exposed the localhost:8080 port for the springboot application and localhost:15672 port for managing the RabbitMQ message broker.
 The credentials for accesing the RabbitMQ manager are in the src/main/resources/application.properties directory.
-Any http client could be used, but just for the convenience of testing header injection, we will use wget in the next examples.
+Any http client could be used, but just for the convenience of testing header injection, we will use CURL in the next examples.
 
 ### /get-pokemon-types-by-name/{pokemonName}
 ```
-wget -q -O- localhost:8080/get-pokemon-types-by-name/pikachu
-["electric"]
+curl -X GET -s http://localhost:8080/get-pokemon-types-by-name/pikachu
 ```
 ### /create-trainer/{ID}
 Create a trainer in the given ID
 ```
-wget -O- localhost:8080/create-trainer/99
+curl -X POST -s http://localhost:8080/create-trainer/99
 ```
 
 ### /add-favourite-pokemon-to-trainer/{pokemonID}
 Note: you need to inject an existing user_id custom header, to be able to add a FavoritePokemon from a Trainer
 ```
-wget -q -S -O - --header='user_id:99' localhost:8080/add-favourite-pokemon-to-trainer/1
+curl -X POST -H "user_id:99" http://localhost:8080/add-favourite-pokemon-to-trainer/1
 ```
 
 ### /remove-favourite-pokemon-to-trainer/{pokemonID}
 Note: you need to inject an existing user_id custom header, to be able to remove a FavoritePokemon from a Trainer
 ```
-wget -q -S -O - --header='user_id:99' localhost:8080/remove-favourite-pokemon-to-trainers/1
+curl -X PUT -H "user_id:99" http://localhost:8080/remove-favourite-pokemon-to-trainer/1
 ```
 
 ### /get-pokemon-details-by-id/{pokemonID}
 ```
-wget -O- localhost:8080/get-pokemon-details-by-id/1
+curl -X GET -s http://localhost:8080/get-pokemon-details-by-id/1
 ```
