@@ -15,7 +15,7 @@ import pokedex.pokemonType.domain.exceptions.PokemonWithoutTypesException;
 
 @RestController
 public class GetPokemonTypeWithHttp {
-    @GetMapping("getPokemonTypesByName/{pokemonName}")
+    @GetMapping("get-pokemon-types-by-name/{pokemonName}")
     public static String getPokemonTypesByName(@PathVariable String pokemonName) {
         var getPokemonType = new GetPokemonTypes(new PokeApiPokemonTypeRepository());
         if (pokemonName.isBlank()) {
@@ -23,8 +23,7 @@ public class GetPokemonTypeWithHttp {
         }
         try {
             PokemonTypeCollection pokemonTypeCollection = getPokemonType.execute(pokemonName);
-            String jsonFormatTypes = transformToJSON(pokemonTypeCollection);
-            return jsonFormatTypes;
+            return transformToJSON(pokemonTypeCollection);
         } catch (PokemonNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         } catch (EmptyPokemonNameParameterException e) {

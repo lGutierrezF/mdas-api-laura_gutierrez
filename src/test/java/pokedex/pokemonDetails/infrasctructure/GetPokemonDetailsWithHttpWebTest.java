@@ -23,7 +23,7 @@ class GetPokemonDetailsWithHttpWebTest {
 
         this.webTestClient
                 .get()
-                .uri("/getPokemonDetailsByID/" + POKEMON_ID)
+                .uri("/get-pokemon-details-by-id/" + POKEMON_ID)
                 .header(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()

@@ -1,10 +1,8 @@
 package trainers.trainer.infrastructure;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import springboot.MdasSpringbootAplication;
@@ -15,9 +13,6 @@ import trainers.trainer.domain.TrainerRepository;
 import trainers.trainer.domain.exceptions.PokemonIdOutOfRangeException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SpringBootTest(classes = MdasSpringbootAplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,17 +31,15 @@ class TrainerWebTest {
             final int POKEMON_ID = 111;
             final String TRAINER_ID = "999";
 
-            this.webTestClient
-                    .get()
-                    .uri("/CreateTrainer/" + TRAINER_ID)
+            this.webTestClient.post()
+                    .uri("/create-trainer/" + TRAINER_ID)
                     .header(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
                     .exchange()
                     .expectStatus()
                     .is2xxSuccessful();
 
-            this.webTestClient
-                    .get()
-                    .uri("/AddFavouritePokemonToTrainer/" + POKEMON_ID)
+            this.webTestClient.post()
+                    .uri("/add-favourite-pokemon-to-trainer/" + POKEMON_ID)
                     .header("user_id", TRAINER_ID)
                     .header(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
                     .exchange()
@@ -58,9 +51,8 @@ class TrainerWebTest {
             assertTrue(trainer.hasFavouritePokemon(new PokemonID(POKEMON_ID)));
 
 
-            this.webTestClient
-                    .get()
-                    .uri("/RemoveFavouritePokemonToTrainer/" + POKEMON_ID)
+            this.webTestClient.put()
+                    .uri("/remove-favourite-pokemon-to-trainer/" + POKEMON_ID)
                     .header("user_id", TRAINER_ID)
                     .header(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
                     .exchange()
@@ -75,14 +67,13 @@ class TrainerWebTest {
 
     @Test
     void shouldReturnTrainerDontExistException_whenUserIdDoesNotExist() {
-        this.webTestClient
-                .get()
-                .uri("/AddFavouritePokemonToTrainer/1")
+        this.webTestClient.post()
+                .uri("/add-favourite-pokemon-to-trainer/1")
                 .header("user_id", "99")
                 .header(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
                 .is4xxClientError()
-                .expectBody(String.class).isEqualTo("TrainerDontExistException");
+                .expectBody().jsonPath("$.message").isEqualTo("TrainerDontExistException");
     }
 }

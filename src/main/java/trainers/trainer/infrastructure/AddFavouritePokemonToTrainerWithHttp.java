@@ -14,7 +14,7 @@ import shared.RabbitMqEventPublisher;
 
 @RestController
 public class AddFavouritePokemonToTrainerWithHttp {
-    @GetMapping("AddFavouritePokemonToTrainer/{pokemonID}")
+    @PostMapping("add-favourite-pokemon-to-trainer/{pokemonID}")
     public ResponseEntity<String> AddFavouritePokemonToTrainer(@RequestHeader("user_id") String trainerID, @PathVariable int pokemonID) {
         var trainerRepository = new InMemoryTrainerRepository();
         var addFavouritePokemon = new AddFavouritePokemon(trainerRepository, new RabbitMqEventPublisher());
@@ -23,11 +23,11 @@ public class AddFavouritePokemonToTrainerWithHttp {
         try {
             addFavouritePokemon.execute(trainerID,pokemonID);
         } catch (TrainerDontExistException e) {
-            return ResponseEntity.badRequest().body("TrainerDontExistException");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"TrainerDontExistException");
         } catch (PokemonAlreadyExistInFavouritePokemonsException e) {
-            return ResponseEntity.badRequest().body("PokemonAlreadyExistInFavouritePokemons");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"PokemonAlreadyExistInFavouritePokemons");
         } catch (PokemonIdOutOfRangeException e) {
-            return ResponseEntity.badRequest().body("PokemonIdOutOfRangeException");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"PokemonIdOutOfRangeException");
         } catch (MessageBrokerConnectionException e) {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"ConnectionError");
         }
